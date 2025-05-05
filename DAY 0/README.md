@@ -7,7 +7,7 @@ This project demonstrates a simple web server running on an Azure Virtual Machin
 ### 1. Created `index.html`
 A basic HTML file was created with the following content:
 
-<html>
+##<html>
 <body>
   <h1>Your Name:Pranavi<h1>
   <img src= "photo11.jpg" alt="photo11">

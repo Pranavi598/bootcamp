@@ -1,3 +1,4 @@
+
 # Simple Web Server Setup
 
 This project demonstrates a simple web server running on an Azure Virtual Machine. It displays my name and photo using a basic HTML file, and includes command-line demonstrations recorded via Asciinema.
@@ -43,4 +44,3 @@ bootcamp/
     docker.cast
     README.md
     .gitignore
-

@@ -1,0 +1,40 @@
+# System Architecture Overview
+
+This document provides an overview of the architecture of the project, detailing the major components, their interactions, and key constraints. The system is designed to be scalable, maintainable, and performant, with a focus on modularity and decoupling of services.
+
+## Major Components
+
+### Frontend
+- Built with React.js.
+- Communicates with the backend via API requests.
+- Handles user input, displays data, and manages sessions.
+
+### Backend
+- Built with Node.js.
+- Handles business logic.
+- Communicates with the database and external services.
+
+### Database
+- PostgreSQL database.
+- Stores user data, transactions, and logs.
+- Supports multi-region replication.
+
+### External APIs
+- Integrates with external services like payment gateways and email providers.
+
+## Data Flow
+
+1. The user submits a form through the frontend.
+2. The frontend sends a request to the backend.
+3. The backend processes the data, retrieves information from the database, and communicates with external APIs.
+4. The final response is sent back to the frontend.
+
+## Key Constraints
+
+- **Performance**: The system must handle 1,000 concurrent users without significant delays.
+- **Security**: Sensitive data is encrypted using AES-256 encryption.
+- **Scalability**: The system is designed to scale horizontally.
+
+## Architecture Diagram
+
+![System Architecture](system_architecture.svg)

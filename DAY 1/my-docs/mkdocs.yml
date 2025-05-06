@@ -1,0 +1,3 @@
+site_name: Your Documentation Site Name
+theme:
+  name: 'material'

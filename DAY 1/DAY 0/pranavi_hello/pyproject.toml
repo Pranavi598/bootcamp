@@ -1,0 +1,13 @@
+[project]
+name = "pranavi-hello"
+version = "0.1.0"
+description = "Typer CLI app for demo"
+authors = [{ name="Pranavi" }]
+dependencies = ["typer[all]"]
+
+[project.scripts]
+pranavi-hello = "pranavi_hello.cli:app"
+
+# Ensure the Python version is compatible with your environment:
+[tool.poetry.dependencies]
+python = "^3.9"

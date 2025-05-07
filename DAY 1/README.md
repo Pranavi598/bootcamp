@@ -1,50 +1,101 @@
-# Simple Web Server Setup
+### README.md
 
-This project demonstrates a simple web server running on an Azure Virtual Machine. It displays my name and photo using a basic HTML file, and includes command-line demonstrations recorded via Asciinema.
+# Cribbed Checker
 
-## Setup Instructions
+A lightweight tool to detect and highlight copied or repetitive text segments in academic writing, student reports, or documentation. Designed for educators and reviewers to maintain content integrity.
 
-### 1. Created `index.html`
-A basic HTML file was created with the following content:
+## Features
 
-```html
-<html>
-  <body>
-    <h1>Your Name: Pranavi</h1>
-    <img src="photo11.jpg" alt="photo11">
-  </body>
-</html>
+* Detects copied lines and phrases.
+* Provides match scores.
+* Easy-to-read output with highlighted matches.
+
+
+
+## Installation
+
+1. Download or clone the repository.
+2. Ensure Python 3.8+ is installed.
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Folder Structure
+
+```
+cribbed-checker/
+├── cribbed_checker/        # Core logic
+├── tests/                  # Unit tests
+├── docs/                   # Documentation files
+├── README.md               # Overview
 ```
 
-### 2. Transferred Photo
-The image file `photo11.jpg` was transferred to the remote Azure VM using the VS Code Explorer drag-and-drop functionality. This allowed copying files from the local machine to the remote server without using SCP or CLI-based methods.
+## Example Input
 
-### 3. Started Web Server
-A simple HTTP server was started using Python with the following command inside the terminal of the Azure VM:
+```
+"This is an original line.\nThis line is copied.\nThis line is copied."
+```
+
+---
+
+## Running the Tool
 
 ```bash
-python3 -m http.server 80
+python cribbed_checker/main.py --input sample.txt
 ```
 
-### 4. Accessed via Public IP
-The web page was accessed by entering the public IP of the Azure Virtual Machine in a browser:  
-`http://4.247.27.166/bootcamp/`
+## Output
 
-### 5. Command-Line Application Demonstration
-You can see a recording of the command-line actions, including navigating directories and starting the web server, in the following Asciinema recordings:
+* The terminal will show repeated/copy-paste lines.
+* A report will be saved in `output/report.txt`.
 
-- Web Server Setup Recording: [Web Server Setup Recording](https://asciinema.org/a/K86gAnbSbuzspRdvkT1GBe2jP)
-- Docker Demo Recording: [Docker Demo Recording](https://asciinema.org/a/pdvVf1HCSKUdZvECk74NTL8WM)
+## Parameters
 
-### 6. Folder Structure
+* `--input` : Path to input text file
+* `--threshold` : Similarity threshold (default = 0.8)
 
+---
+
+### docs/architecture.md
+
+# Architecture Overview
+
+## Flow
+
+1. Load input text.
+2. Tokenize and normalize lines.
+3. Compare similarity between each line.
+4. Highlight matches exceeding threshold.
+5. Output results.
+
+## Diagram
+
+```mermaid
+flowchart TD
+    A[Load Text File] --> B[Preprocess Text]
+    B --> C[Check Similarity]
+    C --> D[Highlight Matches]
+    D --> E[Generate Report]
 ```
-bootcamp/
-  └── DAY 0/
-      ├── index.html
-      ├── photo11.jpg
-      ├── webserver.cast
-      ├── docker.cast
-      ├── README.md
-      └── .gitignore
-```
+
+---
+
+### docs/faq.md
+
+# FAQ / Troubleshooting
+
+## Why is my file not being read?
+
+Ensure the file path is correct and file is UTF-8 encoded.
+
+## Why are some repeated lines not flagged?
+
+Check if they fall below the similarity threshold.
+
+## How do I change match sensitivity?
+
+Use the `--threshold` parameter.
+
+← [Back to Main README](../README.md)

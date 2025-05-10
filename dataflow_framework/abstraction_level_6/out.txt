@@ -1,0 +1,14 @@
+PS C:\Users\prana\dataflow_framework\abstraction_level_6> python main.py config/pipeline.yaml input.txt
+🚀 Starting state-based routing...
+[error] error: file not found
+[warn] warn: disk space running low
+[general -> snakecase]: info:_system_update_completed
+[warn] warn: network latency detected
+[error] error: unable to connect to database
+[general -> snakecase]: system_status:_all_systems_operational
+✅ Exiting: error: file not found
+✅ Exiting: warn: disk space running low
+✅ Exiting: info:_system_update_completed
+✅ Exiting: warn: network latency detected
+✅ Exiting: error: unable to connect to database
+✅ Exiting: system_status:_all_systems_operational

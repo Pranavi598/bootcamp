@@ -106,17 +106,7 @@ chmod +x run.sh
 ./run.sh --watch               # Watch mode
 ./run.sh --input file.txt      # Single file mode
 ```
-
 ---
-
-## 🧰 Makefile Usage
-
-```makefile
-make run           # Run the project
-make docker-build  # Build Docker image
-make docker-run    # Run container
-make clean         # Clean pycache or build files
-```
 
 ---
 
@@ -126,7 +116,7 @@ Upload manually or programmatically:
 
 - **Manual**: Place input files into `watch_directory/unprocessed/`.
 - **Processed files** are automatically moved to `watch_directory/processed/`.
-- **Optional**: Extend FastAPI for file uploads or use tools like `rsync`.
+- **file upload**: Extended FastAPI for file uploads
 
 ---
 
@@ -134,11 +124,10 @@ Upload manually or programmatically:
 
 To set up uptime monitoring:
 
-1. **Deploy the app** on a public server (Azure, AWS, etc.).
-2. **Expose the FastAPI server**, e.g., http://your-ip:8000/health
-3. **Go to [Better Uptime](https://betteruptime.com/)** and:
+
+. **Go to [Better Uptime](https://betteruptime.com/)** and:
    - Create a new monitor.
-   - Set the URL to: `http://<your-server-ip>:8000/health`
+   - Set the URL to: `https://8191-223-178-21-9.ngrok-free.app/health`
    - Configure alerts and ping frequency.
 
 > Note: Monitoring won't work with `localhost`. You must deploy the server publicly.

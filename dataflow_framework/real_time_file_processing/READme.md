@@ -78,6 +78,7 @@ Available endpoints:
 - `GET /health` — Returns system health.
 - `GET /stats` — Displays processing statistics.
 - `GET /files` — Lists processed files.
+  
 
 Default URL: http://127.0.0.1:8000
 
@@ -117,6 +118,8 @@ Upload manually or programmatically:
 - **Manual**: Place input files into `watch_directory/unprocessed/`.
 - **Processed files** are automatically moved to `watch_directory/processed/`.
 - **file upload**: Extended FastAPI for file uploads
+- http://127.0.0.1:8000/docs
+- http://localhost:8000/docs#/default/files_files_get
 
 ---
 

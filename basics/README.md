@@ -69,7 +69,7 @@ pranavi-hello
 
 ## 🔗 Package Link
 
-📦 [Pranavi Hello on TestPyPI](https://test.pypi.org/manage/project/pranavi-hello/releases/gicdcd)
+📦 [Pranavi Hello on TestPyPI](https://test.pypi.org/manage/project/pranavi-hello)
 
 ---
 

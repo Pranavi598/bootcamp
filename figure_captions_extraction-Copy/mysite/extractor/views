@@ -1,0 +1,34 @@
+# # from django.http import JsonResponse
+# # from .pmc_fetcher import fetch_pmc_xml, parse_figure_captions
+# #
+# #
+# # def get_paper_data(request):
+# #     pmc_id = request.GET.get("pmc_id")
+# #     if not pmc_id:
+# #         return JsonResponse({"error": "pmc_id parameter is required"}, status=400)
+# #
+# #     try:
+# #         xml_content = fetch_pmc_xml(pmc_id)  # Rename to xml_content for clarity
+# #         data = parse_figure_captions(xml_content)  # Use the same variable here
+# #         return JsonResponse(data)
+# #     except Exception as e:
+# #         return JsonResponse({"error": str(e)}, status=500)
+# from django.http import JsonResponse
+# from .pmc_fetcher import fetch_pmc_xml, parse_figure_captions
+# from .db_storage import save_paper_to_db
+#
+# def get_paper_data(request):
+#     pmc_id = request.GET.get("pmc_id")
+#     if not pmc_id:
+#         return JsonResponse({"error": "pmc_id parameter is required"}, status=400)
+#
+#     try:
+#         xml_content = fetch_pmc_xml(pmc_id)
+#         data = parse_figure_captions(xml_content)
+#
+#         # ✅ Store in SQLite using Django models
+#         save_paper_to_db(pmc_id, data)
+#
+#         return JsonResponse(data)
+#     except Exception as e:
+#         return JsonResponse({"error": str(e)}, status=500)

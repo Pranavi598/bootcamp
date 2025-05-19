@@ -92,18 +92,46 @@ This is a beginner-friendly implementation developed by a fresher with hands-on 
 Directory structure:
 
 ```
-figure_captions_extraction/
-├── extractor/
-│   ├── api/
-│   ├── ingestion/
-│   ├── management/commands/ingest.py
-│   ├── models.py
-│   ├── templates/
-│   ├── views.py
-├── db.sqlite3
+figure_captions_extraction-Copy/mysite
+├── .env
+├── .env.bak
+├── .venv/
 ├── Dockerfile
-├── requirements.txt
 ├── README.md
+├── admin_screenshots/
+├── db.sqlite3
+├── docker-compose.yml
+├── documentation.md
+├── extractor_figure.csv
+├── extractor_paper.csv
+├── manage.py
+├── mysite/
+│   ├── mysite/
+│   ├── scripts/
+│   └── __init__.py
+        ingest_from_file
+├── mysite/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── db.sqlite3
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── requirements.txt
+├── seed_list.txt
+└── extractor/
+    ├── __init__.py
+    ├── admin.py
+    ├── api.py
+    ├── db_storage.py
+    ├── models.py
+    ├── pmc_fetcher.py
+    ├── pubtator.py
+    ├── test.py
+    ├── tests.py
+    ├── api/
+    └── management/
+        └── commands/
 ```
 
 #### Features Implemented

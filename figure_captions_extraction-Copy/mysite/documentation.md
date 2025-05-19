@@ -150,4 +150,3 @@ http://127.0.0.1:8000/api/figures/?paper_id=PMC1234567
 
 ---
 
-Let me know if you want me to auto-generate a `README.md`, `requirements.txt`, or Dockerfile based on this.

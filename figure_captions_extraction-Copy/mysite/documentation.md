@@ -1,179 +1,153 @@
-# 🧾 Project Documentation: Figure Captions Extraction
+# Developer Hand-off Brief: Figure Caption Extraction and Access System
 
-**Author**: Pranavi  
-**Project**: Bootcamp – Figure Caption & Metadata Extraction using Django  
-**Last Updated**: May 19, 2025  
+## 🎯 Purpose
+
+We are building a Django-based system that extracts figure captions and associated metadata from scientific publications (specifically from PubMed Central). The system supports:
+
+* Extracting title, abstract, figure captions, and figure URLs
+* Identifying key biological entities (e.g., genes) in captions using PubTator API
+* Storing extracted data in a SQLite database
+* Querying and retrieving data via a REST API
+
+This is a beginner-friendly implementation developed by a fresher with hands-on experience in Django and Python.
+
+## ✅ High-Level User Expectations
+
+### 👤 As a User
+
+* I can submit a list of PMC or PMID IDs.
+* I can retrieve extracted figure data via an API.
+* I can get responses in JSON or CSV formats.
+* I can upload lists of paper IDs via the API.
+
+### 🛠️ As an Admin
+
+* I can configure:
+
+  * Location of SQLite DB
+  * API access credentials (simple key-based auth)
+  * Logging level (INFO or DEBUG)
+  * Data source (PMC for now)
+
+
+### ⚙️ As an Ops Person
+
+* I can run ingestion via Django custom commands
+* I can deploy using Docker
+* I get clean startup and shutdown messages
 
 ---
 
-## 📘 Overview
+## 📝 What I Expect From You
 
-This Django project is designed to extract and store **figure captions**, **titles**, **abstracts**, and **biomedical entities** from scientific research articles using the **PMC Open Access** API and **PubTator Central**.
+### 1. Design Document
 
-The core goals of this system are:
-- To build a production-ready ingestion pipeline
-- To modularize API consumption, parsing, and database storage
-- To expose a user-friendly web interface (and later, monitoring APIs)
-- To containerize the system with Docker
+#### 🧱 Architecture Overview
 
----
+* **Backend**: Django app named `extractor`
+* **Database**: SQLite (default `db.sqlite3`)
+* **APIs**: Built using Django views and DRF (if added later)
+* **External APIs**:
 
-## 🧱 Project Architecture
+  * BioC API (for paper structure)
+  * PubTator API (for named entity recognition)
+
+#### 🔑 Key Components
+
+* `ingestion/`: Scripts to fetch and parse paper metadata
+* `api/`: Exposes REST endpoints for data access
+* `models.py`: Defines database schema
+* `management/commands/ingest.py`: Django CLI for ingestion
+* `views.py`: Renders web views (if enabled)
+* `templates/`: (Optional, if HTML frontend is added)
+
+#### 🧩 Dependencies
+
+* `requests`: for HTTP requests to PMC and PubTator APIs
+* `Django`: web framework
+* `sqlite3`: built-in DB for local use
+* `python-dotenv`: for config management
+
+### 2. Implementation and Testing Plan
+
+#### 🔄 Phased Development
+
+1. **Setup Django project** and `extractor` app
+2. **Define models**: Paper, Figure, Entity
+3. **Wrote ingestion script** using BioC and PubTator APIs
+4. **Expose data via API endpoints**
+5. **Test on real PMC IDs** and edge cases
+6. **Add Docker support**
+
+
+#### ✅ Testing Plan
+
+* Unit tests for ingestion pipeline (mocked data)
+* Manual testing with real PMC IDs
+* API testing via curl/Postman
+* Validating DB records via Django Admin
+
+### 3. Implementation
+
+Directory structure:
 
 ```
 figure_captions_extraction/
-│
-├── mysite/                        # Django project folder
-│   ├── api/                       # (Planned) REST endpoints for ingestion and status
-│   ├── ingestion/                 # Core logic for pulling PMC and PubTator data
-│   ├── management/
-│   │   └── commands/
-│   │       └── ingest.py          # Custom CLI command to trigger ingestion
-│   ├── templates/                 # HTML pages showing extracted data
-│   ├── 
-│   ├──                 
-│   ├── models.py                  # Django ORM models
-│   └── ...
-├── requirements.txt               # Python dependencies
-├── Dockerfile                     # Docker setup (in progress)
-├── docker-compose.yml             # Multi-service configuration
-└── README.md                      # Project overview
+├── extractor/
+│   ├── api/
+│   ├── ingestion/
+│   ├── management/commands/ingest.py
+│   ├── models.py
+│   ├── templates/
+│   ├── views.py
+├── db.sqlite3
+├── Dockerfile
+├── requirements.txt
+├── README.md
 ```
 
----
+#### Features Implemented
 
-## ⚙️ Key Components
+* Ingests data for a given list of PMC IDs
+* Extracts title, abstract, captions, figure URLs
+* Gets biological entities from PubTator
+* Stores all in SQLite using Django ORM
+* Exposes a basic REST API (or JSON web views)
+* Uses `.env` file for config (API key, log level)
+* CLI command: `python manage.py ingest --file pmc_ids.txt`
 
-### 1. `models.py`
+### 4. Operationalization
 
-Defines Django models for storing:
-- **Article** – Metadata like title, abstract, PMC ID
-- **Figure** – Caption and figure link
-- **Entity** – Extracted biomedical terms (gene, disease, etc.)
+#### 📘 README Highlights
 
-These models are linked using foreign keys for relational querying.
+* How to run server: `python manage.py runserver`
+* How to ingest: `python manage.py ingest --file your_file.txt`
+* Where data is stored: `db.sqlite3`
+* Docker support: `docker build -t figure-extractor . && docker run -p 8000:8000 figure-extractor`
+* Access API: `http://localhost:8000/api/figures/`
 
----
+#### 🧪 Sample Usage
 
-### 2. `ingestion/` – PMC & PubTator Logic
-
-This folder contains Python functions to:
-- Fetch full text and figures from the **PMC Open Access API**
-- Fetch named entities from **PubTator Central**
-- Clean, parse, and prepare for storage
-
----
-
-### 3. `management/commands/ingest.py`
-
-Custom management command to ingest a single article:
-
-```bash
-python manage.py ingest PMC1234567
 ```
-
-This command:
-- Accepts a valid **PMC ID**
-- Fetches and parses both PMC + PubTator data
-- Calls model layer to persist to the database
-- Logs output and errors
-
----
-
-### 4. `views.py` and `templates/`
-
-Currently minimal, but supports rendering:
-- Extracted titles
-- Abstracts
-- Figure captions
-- Entities
-
-This part will grow to include visualizationI.
-
----
-
-
-
-## 🧪 How to Use
-
-### Method 1: Without Docker (WSL/Virtualenv)
-
-```bash
-# Activate virtual environment
-source myenv/bin/activate
-
-# Navigate to Django folder
-cd mysite
-
-# Run migrations
-python manage.py migrate
-
-# Ingest a sample article
-python manage.py ingest PMC1234567
+# Run ingestion
+python manage.py ingest --file sample_ids.txt
 
 # Start server
 python manage.py runserver
+
+# Visit API
+http://127.0.0.1:8000/api/figures/?paper_id=PMC1234567
 ```
 
-### Method 2: Docker (Planned)
+---
 
-```bash
-# Once Docker daemon is fixed
-docker-compose build
-docker-compose up
-```
+## figure-caption-extraction system
 
-This will bring up:
-- Django app container
-- PostgreSQL or SQLite (optional volume)
-- Future: FastAPI monitor service
+* Clean, working system based on Django and SQLite
+* Design choices ( SQLite for simplicity, Django for built-in admin and ORM)
+* Realistic handling of errors, missing captions, and empty API responses
+* README and Dockerfile included
 
 ---
 
-## 🔍 Ingestion Pipeline: How It Works
-
-1. **User Input**: `python manage.py ingest PMCxxxxxxx`
-2. **PMC API Fetch**: Title, abstract, and figure XML data
-3. **PubTator Fetch**: Biomedical named entities
-4. **Parse + Store**: Save into Django models
-5. **View Output**: Render in HTML or query via admin
-
----
-
-## 📊 Example PMC Article
-
-For `PMC1234567`:
-
-- Title: _"Effect of XYZ on ABC"_
-- Abstract: _"This study explores..."_
-- Figures:
-  - **Figure 1**: "Schematic of the treatment model"
-  - **Figure 2**: "Results after 10 days"
-- Entities: [Gene: TP53], [Chemical: Doxorubicin], [Disease: Cancer]
-
----
-
-## 🪛 Developer Notes
-
-- **WSL (Ubuntu 22.04)** is being used for development
-- Django version: 4.x
-- Python version: 3.10+
-- 
-- Docker Compose integration is partially complete 
-
----
-
-## 🗺️ Roadmap
-
-Features:                             
-
-| PMC + PubTator ingestion         
-| Ingestion management command        
-| Basic HTML template rendering       
-| Dockerfile                        
-| Docker Compose                      
-| FastAPI monitoring dashboard        
-| Ingestion progress & error logging 
-
-
-
+Let me know if you want me to auto-generate a `README.md`, `requirements.txt`, or Dockerfile based on this.

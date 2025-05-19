@@ -7,24 +7,49 @@ This project is a Django-based web application that extracts figure captions and
 ## 🔧 Project Structure (So Far)
 
 ```
-figure_captions_extraction/
-│
+```
+figure_captions_extraction-Copy/mysite
+├── .env
+├── .env.bak
+├── .venv/
+├── Dockerfile
+├── README.md
+├── admin_screenshots/
+├── db.sqlite3
+├── docker-compose.yml
+├── documentation.md
+├── extractor_figure.csv
+├── extractor_paper.csv
+├── manage.py
 ├── mysite/
-│   ├── api/                  # Django API views for frontend/backend integration
-│   ├── ingestion/           # Scripts for pulling figure and metadata from PMC & PubTator
-│   ├── management/
-│   │   └── commands/
-│   │       └── ingest.py     # Custom Django management command to ingest data
-│   ├── templates/            # HTML templates for frontend
-│    
-│   ├── models.py             # Django models for storing extracted data
-│   ├── tasks.py              # Background processing and helper functions
-│   └── ...
-│
-├── Dockerfile                # Dockerfile for running Django app
-├── docker-compose.yml        # Docker Compose for managing services
-├── requirements.txt          # Python dependencies
-└── README.md                 # You are here
+│   ├── mysite/
+│   ├── scripts/
+│   └── __init__.py
+        ingest_from_file
+├── mysite/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── db.sqlite3
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── requirements.txt
+├── seed_list.txt
+└── extractor/
+    ├── __init__.py
+    ├── admin.py
+    ├── api.py
+    ├── db_storage.py
+    ├── models.py
+    ├── pmc_fetcher.py
+    ├── pubtator.py
+    ├── test.py
+    ├── tests.py
+    ├── api/
+    └── management/
+        └── commands/
+```
+
 ```
 
 ---
@@ -35,11 +60,9 @@ figure_captions_extraction/
 - [x] Integrated PMC & PubTator APIs
 - [x] Custom ingestion command: `python manage.py ingest "<PMC_ID>"`
 - [x] Data stored in Django models: articles, figures, captions, and entity mentions
-- [x] Basic frontend using templates to display extracted metadata
 - [x] Dockerfile for containerizing the Django app
 - [x] `docker-compose.yml` setup (pending Docker daemon setup)
 - [x] Running and testing inside WSL (Ubuntu 22.04)
-- [x] FastAPI considered for future monitoring layer (in progress)
 
 ---
 
@@ -101,13 +124,6 @@ The system:
 
 ---
 
-## 🛠️ Features
-
-- [ ] Add real-time monitoring using FastAPI
-- [ ] Expose ingestion progress via API
-- [ ] Add logging and error handling
-- [ ] Add tests and CI pipeline
-- [ ] Polish Docker Compose setup after fixing Docker daemon issues
 
 
 

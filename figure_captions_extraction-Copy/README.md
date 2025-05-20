@@ -1,114 +1,171 @@
-# 📚 Figure Captions Extraction
+# 🧬 Figure Caption Extraction System
 
-This project is a Django-based web application that extracts figure captions and related metadata (such as title, abstract, entities) from scientific articles using **PMC** and **PubTator** APIs. The system is being developed as part of a bootcamp with a focus on production-readiness, modular architecture, and real-time monitoring.
+A Django-based system to **extract**, **store**, and **serve** figure captions and biomedical entities from scientific publications using PMC and PubTator APIs.
 
 ---
 
-## 🔧 Project Structure (So Far)
+## 🌟 Features
+
+- 🔍 Fetch metadata, captions, and images from **PMC**
+- 🧠 Extract **biomedical entities** via **PubTator**
+- 🗃️ Store results in **SQLite** using Django ORM
+- 🔁 Supports **batch ingestion**
+- 🛠️ REST API endpoints (optional)
+- ⚙️ Environment-driven with `.env`
+- 🐳 Docker support
+- 📂 File-watcher to auto-process uploaded input files
+
+---
+
+## 📂 Directory Structure (Simplified)
 
 ```
-figure_captions_extraction/
-│
-├── mysite/
-│   ├── api/                  # Django API views for frontend/backend integration
-│   ├── ingestion/           # Scripts for pulling figure and metadata from PMC & PubTator
-│   ├── management/
-│   │   └── commands/
-│   │       └── ingest.py     # Custom Django management command to ingest data
-│   ├── templates/            # HTML templates for frontend
-│    
-│   ├── models.py             # Django models for storing extracted data
-│   ├── tasks.py              # Background processing and helper functions
-│   └── ...
-│
-├── Dockerfile                # Dockerfile for running Django app
-├── docker-compose.yml        # Docker Compose for managing services
-├── requirements.txt          # Python dependencies
-└── README.md                 # You are here
+figure_captions_extraction-Copy/
+├── .env
+├── Dockerfile
+├── docker-compose.yml
+├── manage.py
+├── README.md
+├── documentation.md
+├── requirements.txt
+├── tests_id.txt
+├── extractor/
+│   ├── models.py
+│   ├── admin.py
+│   ├── api.py
+│   ├── db_storage.py
+│   ├── pmc_fetcher.py
+│   ├── pubtator.py
+│   ├── watcher/
+│   │   ├── watcher.py
+│   │   ├── file_ingester.py
+│   │   └── upload-ingester.py
+│   └── management/
+│       └── commands/
+│           └── ingest_paper.py
+└── mysite/
+    ├── settings.py
+    ├── urls.py
+    └── ...
 ```
 
 ---
 
-## ✅ Features Implemented
+## 🚀 Getting Started
 
-- [x] Django project setup and modular app (`extractor`)
-- [x] Integrated PMC & PubTator APIs
-- [x] Custom ingestion command: `python manage.py ingest "<PMC_ID>"`
-- [x] Data stored in Django models: articles, figures, captions, and entity mentions
-- [x] Basic frontend using templates to display extracted metadata
-- [x] Dockerfile for containerizing the Django app
-- [x] `docker-compose.yml` setup (pending Docker daemon setup)
-- [x] Running and testing inside WSL (Ubuntu 22.04)
-- [x] FastAPI considered for future monitoring layer (in progress)
-
----
-
-## 🐳 Docker Setup 
-
-### Requirements
-- Docker Desktop running on Windows
-- WSL integration enabled (`Ubuntu-22.04`)
-- Docker daemon must be active before running these commands
-
-### Steps to Build and Run :
+### 1. Install Dependencies
 
 ```bash
-# Build the containers
-docker-compose build
-
-# Run the containers
-docker-compose up
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
----
+### 2. Setup `.env`
 
-## 🧪 Local Development (WSL / Virtualenv)
+```ini
+DEBUG=True
+LOG_LEVEL=INFO
+API_KEY=your_pubtator_api_key
+```
 
-You can also run the project manually without Docker:
+### 3. Run Migrations
 
 ```bash
-# Activate virtual environment
-source myenv/bin/activate
-
-# Navigate to the Django project
-cd mysite
-
-# Run migrations
 python manage.py migrate
-
-# Run the ingestion command (example PMC ID)
-python manage.py ingest PMC1234567
-
-# Start development server
-python manage.py runserver
 ```
 
----
-
-## 🔍 Example Output (From Ingestion)
-
-After running:
+### 4. Ingest PMCIDs (Batch)
 
 ```bash
-python manage.py ingest PMC1234567
+python manage.py ingest_paper --input tests_id.txt
 ```
-
-The system:
-- Fetches metadata (title, abstract, figure captions)
-- Parses PubTator annotations (gene, disease, chemical entities)
-- Stores everything in the database
-- Renders on a simple HTML page (WIP)
 
 ---
 
-## 🛠️ Features
+## 🔁 File Watcher Mode
 
-- [ ] Add real-time monitoring using FastAPI
-- [ ] Expose ingestion progress via API
-- [ ] Add logging and error handling
-- [ ] Add tests and CI pipeline
-- [ ] Polish Docker Compose setup after fixing Docker daemon issues
+To auto-process new files (in watcher mode):
 
+```bash
+python extractor/watcher/watcher.py
+```
 
+Or to upload and ingest:
 
+```bash
+python extractor/watcher/upload-ingester.py --file path/to/your_file.txt
+```
+
+---
+
+## 🔌 Sample API (if integrated)
+
+**GET /api/figures/?paper_id=PMC1234567**
+
+```json
+[
+  {
+    "paper_id": "PMC1234567",
+    "figure_number": "Fig. 2",
+    "caption": "TP53 expression...",
+    "url": "https://...",
+    "entities": ["TP53"]
+  }
+]
+```
+
+---
+
+## 🧾 Logging
+
+Your `.env` defines log level:
+
+```ini
+LOG_LEVEL=INFO
+```
+
+Output (in terminal):
+
+```
+2025-05-19 12:00:00 [INFO] extractor.pmc_fetcher: Downloaded PMC1234567
+2025-05-19 12:00:00 [DEBUG] extractor.pubtator: Entities: ['TP53']
+```
+
+---
+
+## 🐳 Docker Usage
+
+### Build
+
+```bash
+docker build -t figure-caption-extractor .
+```
+
+### Run
+
+```bash
+docker run --env-file .env -p 8000:8000 figure-caption-extractor
+```
+
+---
+
+## 📸 Django Admin
+
+Navigate to `/admin/` to manage `Paper`, `Figure`, and `Entity` entries.
+
+---
+
+## 📌 Future Ideas
+
+- Add Swagger UI
+- PostgreSQL support
+- Frontend integration (React/Vue)
+- Scheduling or cron-based ingestion
+
+---
+
+## 🧠 Author
+
+Built with ❤️ by **Pranavi** during a data engineering bootcamp.
 

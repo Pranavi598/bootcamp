@@ -21,24 +21,40 @@ The core goals of this system are:
 ## 🧱 Project Architecture
 
 ```
-figure_captions_extraction/
-│
-├── mysite/                        # Django project folder
-│   ├── api/                       # (Planned) REST endpoints for ingestion and status
-│   ├── ingestion/                 # Core logic for pulling PMC and PubTator data
-│   ├── management/
-│   │   └── commands/
-│   │       └── ingest.py          # Custom CLI command to trigger ingestion
-│   ├── templates/                 # HTML pages showing extracted data
-│   ├── 
-│   ├──                 
-│   ├── models.py                  # Django ORM models
+figure_captions_extraction-Copy/
+├── .env                  # Environment variables (API keys, settings)
+├── Dockerfile            # Docker config
+├── docker-compose.yml    # Optional Docker Compose
+├── README.md             # Usage guide
+├── documentation.md      # Project documentation (you’re reading this!)
+├── db.sqlite3            # Default database
+├── extractor_figure.csv  # Exported data
+├── extractor_paper.csv   # Exported data
+├── manage.py             # Django CLI entry
+├── requirements.txt      # Python dependencies
+├── tests_id.txt          # Input PMCIDs
+├── admin_screenshots/    # Django admin screenshots (optional)
+├── mysite/               # Django settings and WSGI
+│   ├── settings.py
+│   ├── urls.py
 │   └── ...
-├── requirements.txt               # Python dependencies
-├── Dockerfile                     # Docker setup (in progress)
-├── docker-compose.yml             # Multi-service configuration
-└── README.md                      # Project overview
+└── extractor/            # Main app
+    ├── api.py
+    ├── db_storage.py
+    ├── models.py
+    ├── pmc_fetcher.py
+    ├── pubtator.py
+    ├── admin.py
+    ├── management/
+    │   └── commands/
+    │       └── ingest_paper.py   # Batch ingestion CLI
+    ├── watcher/
+    │   ├── file_ingester.py
+    │   ├── watcher.py
+    │   └── upload-ingester.py
+    └── api/                      # Optional: DRF views
 ```
+
 
 ---
 
@@ -55,7 +71,7 @@ These models are linked using foreign keys for relational querying.
 
 ---
 
-### 2. `ingestion/` – PMC & PubTator Logic
+### 2. `watcher/` – PMC & PubTator Logic
 
 This folder contains Python functions to:
 - Fetch full text and figures from the **PMC Open Access API**
@@ -64,7 +80,7 @@ This folder contains Python functions to:
 
 ---
 
-### 3. `management/commands/ingest.py`
+### 3. `management/commands/ingest_paper.py`
 
 Custom management command to ingest a single article:
 

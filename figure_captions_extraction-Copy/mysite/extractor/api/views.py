@@ -8,6 +8,7 @@ from extractor.models import Paper
 from extractor.pmc_fetcher import fetch_pmc_xml, parse_figure_captions
 from extractor.db_storage import save_paper_to_db
 
+
 def api_key_required(view_func):
     @wraps(view_func)
     def _wrapped(request, *args, **kwargs):

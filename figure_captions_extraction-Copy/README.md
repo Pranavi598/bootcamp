@@ -1,184 +1,114 @@
-# 🧠 Figure Captions Extraction System
+# 📚 Figure Captions Extraction
 
-This project extracts figure captions and metadata (titles, abstracts, entities, etc.) from scientific research articles using the PMC and PubTator APIs. It supports both CLI and REST API-based ingestion, provides authentication, and logs progress with detailed statuses.
+This project is a Django-based web application that extracts figure captions and related metadata (such as title, abstract, entities) from scientific articles using **PMC** and **PubTator** APIs. The system is being developed as part of a bootcamp with a focus on production-readiness, modular architecture, and real-time monitoring.
 
 ---
 
-## 📁 Project Structure
+## 🔧 Project Structure (So Far)
 
 ```
-## 📁 Project Structure
-
-```
-figure_captions_extraction-Copy/
-├── .env                  # Environment variables (API keys, settings)
-├── Dockerfile            # Docker config
-├── docker-compose.yml    # Optional Docker Compose
-├── README.md             # Usage guide
-├── documentation.md      # Project documentation (you’re reading this!)
-├── db.sqlite3            # Default database
-├── extractor_figure.csv  # Exported data
-├── extractor_paper.csv   # Exported data
-├── manage.py             # Django CLI entry
-├── requirements.txt      # Python dependencies
-├── tests_id.txt          # Input PMCIDs
-├── admin_screenshots/    # Django admin screenshots (optional)
-├── mysite/               # Django settings and WSGI
-│   ├── settings.py
-│   ├── urls.py
+figure_captions_extraction/
+│
+├── mysite/
+│   ├── api/                  # Django API views for frontend/backend integration
+│   ├── ingestion/           # Scripts for pulling figure and metadata from PMC & PubTator
+│   ├── management/
+│   │   └── commands/
+│   │       └── ingest.py     # Custom Django management command to ingest data
+│   ├── templates/            # HTML templates for frontend
+│    
+│   ├── models.py             # Django models for storing extracted data
+│   ├── tasks.py              # Background processing and helper functions
 │   └── ...
-└── extractor/            # Main app
-    ├── api.py
-    ├── db_storage.py
-    ├── models.py
-    ├── pmc_fetcher.py
-    ├── pubtator.py
-    ├── admin.py
-    ├── management/
-    │   └── commands/
-    │       └── ingest_paper.py   # Batch ingestion CLI
-    ├── watcher/
-    │   ├── file_ingester.py
-    │   ├── watcher.py
-    │   └── upload-ingester.py
-    └── api/                      # Optional: DRF views
+│
+├── Dockerfile                # Dockerfile for running Django app
+├── docker-compose.yml        # Docker Compose for managing services
+├── requirements.txt          # Python dependencies
+└── README.md                 # You are here
 ```
 
 ---
 
-## ✅ Features
+## ✅ Features Implemented
 
-* Extract figure captions from PMC Open Access articles
-* Use PubTator API for biomedical entity tagging
-* CLI ingestion using `manage.py ingest`
-* REST API ingestion (`POST /api/submit_ids/`)
-* API key authentication
-* Logs results (success, error, syntax issues)
-* JSON output format
-* Modular for future extension (e.g., arXiv, bioRxiv)
+- [x] Django project setup and modular app (`extractor`)
+- [x] Integrated PMC & PubTator APIs
+- [x] Custom ingestion command: `python manage.py ingest "<PMC_ID>"`
+- [x] Data stored in Django models: articles, figures, captions, and entity mentions
+- [x] Basic frontend using templates to display extracted metadata
+- [x] Dockerfile for containerizing the Django app
+- [x] `docker-compose.yml` setup (pending Docker daemon setup)
+- [x] Running and testing inside WSL (Ubuntu 22.04)
+- [x] FastAPI considered for future monitoring layer (in progress)
 
 ---
 
-## 🚀 Quick Start
+## 🐳 Docker Setup 
 
-### 1. Install dependencies
+### Requirements
+- Docker Desktop running on Windows
+- WSL integration enabled (`Ubuntu-22.04`)
+- Docker daemon must be active before running these commands
+
+### Steps to Build and Run :
 
 ```bash
-pip install -r requirements.txt
+# Build the containers
+docker-compose build
+
+# Run the containers
+docker-compose up
 ```
 
 ---
 
-### 2. Create `.env` file
+## 🧪 Local Development (WSL / Virtualenv)
 
-```ini
-# .env
-X_API_KEY=ABCDEF67890
-```
-
----
-
-### 3. Start Django server
+You can also run the project manually without Docker:
 
 ```bash
+# Activate virtual environment
+source myenv/bin/activate
+
+# Navigate to the Django project
+cd mysite
+
+# Run migrations
+python manage.py migrate
+
+# Run the ingestion command (example PMC ID)
+python manage.py ingest PMC1234567
+
+# Start development server
 python manage.py runserver
 ```
 
 ---
 
-## 💪 CLI Ingestion Example
+## 🔍 Example Output (From Ingestion)
+
+After running:
 
 ```bash
-python manage.py ingest --input data/pmc_ids.txt
+python manage.py ingest PMC1234567
 ```
 
-Expected output:
-
-```
-PMC8674544 - Success
-PMC9536536 - Failed: syntax error
-```
+The system:
+- Fetches metadata (title, abstract, figure captions)
+- Parses PubTator annotations (gene, disease, chemical entities)
+- Stores everything in the database
+- Renders on a simple HTML page (WIP)
 
 ---
 
-## 🌐 API Ingestion Example
+## 🛠️ Features
 
-```bash
-curl -X POST http://127.0.0.1:8000/api/submit_ids/ \
-  -H "Content-Type: application/json" \
-  -H "X-API-KEY: ABCDEF67890" \
-  -d '{"pmc_ids": ["PMC1852221", "PMC6821181"]}'
-```
+- [ ] Add real-time monitoring using FastAPI
+- [ ] Expose ingestion progress via API
+- [ ] Add logging and error handling
+- [ ] Add tests and CI pipeline
+- [ ] Polish Docker Compose setup after fixing Docker daemon issues
 
-Returns JSON like:
 
-```json
-[
-  {"pmc_id": "PMC1852221", "status": "error", "message": "syntax error"},
-  {"pmc_id": "PMC6821181", "status": "success"}
-]
-```
-
----
-
-## 🔒 API Authentication
-
-All POST requests must include a valid header:
-
-```
-X-API-KEY: ABCDEF67890
-```
-
-The key is stored securely in your `.env` file.
-
----
-
-## 📜 Logging
-
-Logging is defined in `logging_config.py`:
-
-```python
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
-```
-
-To change verbosity, modify `level=logging.INFO` to `DEBUG`, `WARNING`, etc.
-
----
-
-## 🔤 Input File Format
-
-Example `pmc_ids.txt`:
-
-```
-PMC8674544
-PMC9536536
-```
-
----
-
-## 🌍 Data Source
-
-Currently supported:
-
-* ✅ PMC Open Access Subset (XML)
-* ✅ PubTator (entity recognition)
-
-Designed to support future extensions (e.g., arXiv, bioRxiv).
-
----
-
-## 🛠️ Future Enhancements
-
-* Add PDF caption extraction
-* Add monitoring dashboard
-* Add background job queue (Celery)
-* Store results in PostgreSQL or S3
-
----
 
 

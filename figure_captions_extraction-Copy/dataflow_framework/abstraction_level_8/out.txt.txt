@@ -1,0 +1,13 @@
+PS C:\Users\prana\dataflow_framework\abstraction_level_8>  python main.py
+←[32mINFO←[0m:     Started server process [←[36m10568←[0m]
+←[32mINFO←[0m:     Waiting for application startup.
+←[32mINFO←[0m:     Application startup complete.
+←[32mINFO←[0m:     Uvicorn running on ←[1mhttp://0.0.0.0:8000←[0m (Press CTRL+C to quit)
+←[32mINFO←[0m:     127.0.0.1:55775 - "←[1mGET /status HTTP/1.1←[0m" ←[32m200 OK←[0m
+←[32mINFO←[0m:     127.0.0.1:55775 - "←[1mGET /status HTTP/1.1←[0m" ←[32m200 OK←[0m
+←[32mINFO←[0m:     127.0.0.1:56010 - "←[1mGET /status HTTP/1.1←[0m" ←[32m200 OK←[0m
+←[32mINFO←[0m:     127.0.0.1:56010 - "←[1mGET /favicon.ico HTTP/1.1←[0m" ←[31m404 Not Found←[0m
+←[32mINFO←[0m:     127.0.0.1:56011 - "←[1mGET /status HTTP/1.1←[0m" ←[32m200 OK←[0m
+←[32mINFO←[0m:     127.0.0.1:57684 - "←[1mGET /status HTTP/1.1←[0m" ←[32m200 OK←[0m
+
+

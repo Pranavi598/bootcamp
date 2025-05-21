@@ -1,0 +1,54 @@
+processors:
+  trim:
+    module: processors.trim
+    function: process
+  tag_error:
+    module: processors.tag_error
+    function: process
+  tag_warn:
+    module: processors.tag_warn
+    function: process
+  splitter:
+    module: processors.splitter
+    function: process
+  count:
+    module: processors.count
+    function: process
+  archive:
+    module: processors.archive
+    function: process
+  tally:
+    module: processors.tally
+    function: process
+  format:
+    module: processors.format
+    function: process
+  print_line:
+    module: processors.print_line
+    function: process
+
+dag:
+  start: trim
+  routes:
+    trim:
+      - tag_error
+    tag_error:
+      - tag_warn
+    tag_warn:
+      - splitter
+    splitter:
+      errors:
+        - count
+        - archive
+      warnings:
+        - tally
+      general:
+        - format
+    count:
+      - print_line
+    archive:
+      - print_line
+    tally:
+      - print_line
+    format:
+      - print_line

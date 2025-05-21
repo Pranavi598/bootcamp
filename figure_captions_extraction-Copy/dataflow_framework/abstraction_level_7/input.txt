@@ -1,0 +1,6 @@
+ERROR: failed to start service
+WARN: high memory usage detected
+INFO: system check complete
+WARN: disk space low
+ERROR: unable to connect to server
+INFO: all systems operational

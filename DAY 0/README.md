@@ -11,14 +11,6 @@ This project serves as the initial setup verification for the bootcamp. It demon
 
 ---
 
-## ✅ Project Link
-
-View this project on GitHub: [bootcamp](https://github.com/<your-github-username>/bootcamp)
-
-> Replace <your-github-username> with your GitHub ID
-
----
-
 ## 🌐 Live Web Page
 
 The web page displays my name and a photo using a simple HTML file hosted on an Azure VM.

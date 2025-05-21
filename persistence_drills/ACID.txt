@@ -1,0 +1,54 @@
+1. What are transactions?
+A transaction is a set of database operations that are treated as a single unit.
+Either all the changes happen, or none do.
+
+👉 Example: Transferring money — withdraw from one account and deposit to another.
+
+2. What are ACID Properties?
+ACID stands for:
+
+A – Atomicity:
+Ensures that a transaction is treated as a single unit — either all operations succeed or none are applied.
+
+C – Consistency:
+Guarantees that a transaction brings the database from one valid state to another, following all defined rules and constraints.
+
+I – Isolation:
+Ensures that concurrent transactions do not affect each other, preventing race conditions or dirty reads.
+
+D – Durability:
+Once a transaction is committed, the changes are permanently saved, even in case of system crashes or power failures.
+
+3. Suppose you do not have transactions. Is that system useful? Why?
+It may work for simple or read-only use cases.
+But for important systems like banking or inventory, it's risky and unreliable.
+👉 Data may become inconsistent, corrupt, or partially updated.
+
+4. What properties does your file system have?
+Most file systems offer:
+
+Basic atomicity (e.g., full file write or nothing)
+
+Durability once data is written to disk
+But they lack full transactional support like databases.
+
+5. Suppose you do not have "A" (Atomicity) in ACID — what happens? When is it ok?
+What happens: Partial updates can occur (e.g., money withdrawn but not deposited).
+
+When it's OK: For non-critical operations, like logging or analytics.
+
+6. Suppose you do not have "C" (Consistency)?
+What happens: Invalid data can enter the system (e.g., negative balance).
+
+When it's OK: In temporary states like caching, where final consistency is restored later.
+
+7. Suppose you do not have "I" (Isolation)?
+What happens: Transactions can interfere (e.g., two users buy the last item).
+
+When it's OK: High-speed apps like social media likes — exact count isn't critical.
+
+8. Suppose you do not have "D" (Durability)?
+What happens: Committed changes may disappear after a crash.
+
+When it's OK: In-memory systems where data can be rebuilt (e.g., session data in Redis).
+

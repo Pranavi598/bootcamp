@@ -1,5 +1,4 @@
-
-```
+readme_md = """
 # Bootcamp Setup — DAY 0
 
 This project serves as the initial setup verification for the bootcamp. It demonstrates:
@@ -9,13 +8,6 @@ This project serves as the initial setup verification for the bootcamp. It demon
 * Setting up Docker and testing a Python container
 * Recording CLI demos using Asciinema
 
----
-
-## ✅ Project Link
-
-View this project on GitHub: [bootcamp](https://github.com/<your-github-username>/bootcamp)
-
-> Replace <your-github-username> with your GitHub ID
 
 ---
 
@@ -42,6 +34,7 @@ The web page displays my name and a photo using a simple HTML file hosted on an 
 
 ## 📁 Folder Structure
 
+\`\`\`
 bootcamp/
 └── DAY 0/
     ├── index.html          # Web page with name and photo
@@ -50,7 +43,7 @@ bootcamp/
     ├── docker.cast         # Asciinema recording: Docker demo
     ├── README.md           # This file
     └── .gitignore
-
+\`\`\`
 
 ---
 
@@ -58,14 +51,14 @@ bootcamp/
 
 ### 1. Created index.html
 
-html
+\`\`\`html
 <html>
   <body>
     <h1>Your Name: Pranavi</h1>
     <img src="photo11.jpg" alt="photo11">
   </body>
 </html>
-
+\`\`\`
 
 ### 2. Transferred Files to VM
 
@@ -78,9 +71,9 @@ Transferred index.html and photo11.jpg to the Azure VM using:
 
 Ran a simple Python HTTP server inside the Azure VM:
 
-bash
+\`\`\`bash
 python3 -m http.server 80
-
+\`\`\`
 
 ### 4. Accessed Web Page via Public IP
 
@@ -90,12 +83,12 @@ Navigated to the public IP in a browser:
 
 ### 5. Installed Docker & Ran Python Container
 
-bash
+\`\`\`bash
 sudo apt update
 sudo apt install docker.io
 sudo docker pull python
 sudo docker run python python -c "print('Hello, World!')"
-
+\`\`\`
 
 ---
 
@@ -128,41 +121,38 @@ sudo docker run python python -c "print('Hello, World!')"
 
 ## ✅ Status
 
-GitHub Repo Setup
-Azure VM Provisioned
-SSH Key Setup
-Web Server Running
-Docker Installed & Tested
-CLI Demos Recorded   .give indetail or biref information of what we have done to these things GitHub Repo Setup
-Azure VM Provisioned
-SSH Key Setup
-Web Server Running
-Docker Installed & Tested
-CLI Demos Recorded
+- GitHub Repo Setup  
+- Azure VM Provisioned  
+- SSH Key Setup  
+- Web Server Running  
+- Docker Installed & Tested  
+- CLI Demos Recorded
+
+---
 
 ## ✅ GitHub Repo Setup
 
 ### What We’ve Done:
-- Created a GitHub repository named `bootcamp` containing all the necessary files for the bootcamp tasks.
+- Created a GitHub repository named \`bootcamp\` containing all the necessary files for the bootcamp tasks.
 
 ### Installation Steps:
 1. **Create a GitHub Account** (if you don’t have one already): [GitHub Sign Up](https://github.com/)
 2. **Create a Repository**:
    - Go to your GitHub profile.
-   - Click on `+` in the upper-right corner and select **New Repository**.
-   - Name the repository `bootcamp`, select **Public** or **Private**, and click **Create repository**.
+   - Click on \`+\` in the upper-right corner and select **New Repository**.
+   - Name the repository \`bootcamp\`, select **Public** or **Private**, and click **Create repository**.
 3. **Clone the Repository to Your Local Machine**:
-   ```bash
+   \`\`\`bash
    git clone https://github.com/<your-github-username>/bootcamp.git
-   ```
+   \`\`\`
 4. **Push Files**:
-   - Add your files (like `index.html`, `photo11.jpg`, `webserver.cast`, `docker.cast`) to the repository.
+   - Add your files (like \`index.html\`, \`photo11.jpg\`, \`webserver.cast\`, \`docker.cast\`) to the repository.
    - Commit the changes and push to GitHub:
-     ```bash
+     \`\`\`bash
      git add .
      git commit -m "Initial commit"
      git push origin main
-     ```
+     \`\`\`
 
 ---
 
@@ -179,14 +169,14 @@ CLI Demos Recorded
    - Select **Ubuntu** as the OS and configure the VM according to your preferences (size, region, etc.).
 3. **SSH Access**:
    - Generate an SSH key pair if you don’t have one:
-     ```bash
+     \`\`\`bash
      ssh-keygen -t rsa -b 2048 -f ~/.ssh/azure_key
-     ```
+     \`\`\`
    - Add the public key to the Azure VM creation process.
    - Once the VM is created, you can SSH into it:
-     ```bash
+     \`\`\`bash
      ssh -i ~/.ssh/azure_key <your-vm-public-ip>
-     ```
+     \`\`\`
 
 ---
 
@@ -197,42 +187,42 @@ CLI Demos Recorded
 
 ### Installation Steps:
 1. **Generate SSH Keys** (if not already done):
-   ```bash
+   \`\`\`bash
    ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa
-   ```
+   \`\`\`
 2. **Add SSH Key to GitHub**:
    - Go to [GitHub SSH settings](https://github.com/settings/keys).
-   - Click **New SSH Key**, paste your public key (`~/.ssh/id_rsa.pub`), and save it.
+   - Click **New SSH Key**, paste your public key (\`~/.ssh/id_rsa.pub\`), and save it.
 3. **Add SSH Key to Azure VM**:
-   - When creating the VM, paste the public key into the **SSH public key** field, or manually copy it to `~/.ssh/authorized_keys` on the VM after SSH-ing in.
+   - When creating the VM, paste the public key into the **SSH public key** field, or manually copy it to \`~/.ssh/authorized_keys\` on the VM after SSH-ing in.
 
 ---
 
 ## ✅ Web Server Running
 
 ### What We’ve Done:
-- Started a basic Python HTTP server to serve the `index.html` file on the Azure VM.
+- Started a basic Python HTTP server to serve the \`index.html\` file on the Azure VM.
 
 ### Installation Steps:
 1. **Install Python (if not already installed)**:
-   ```bash
+   \`\`\`bash
    sudo apt update
    sudo apt install python3
-   ```
+   \`\`\`
 2. **Upload Files to the VM**:
    - You can use **VS Code**'s Explorer to drag and drop files, or use **scp**:
-     ```bash
+     \`\`\`bash
      scp index.html photo11.jpg <your-vm-user>@<your-vm-ip>:/home/<your-vm-user>/bootcamp/
-     ```
+     \`\`\`
 3. **Start the Web Server**:
    - SSH into your Azure VM.
    - Run the Python HTTP server:
-     ```bash
+     \`\`\`bash
      cd /home/<your-vm-user>/bootcamp/
      python3 -m http.server 80
-     ```
+     \`\`\`
 4. **Access the Web Page**:
-   - Open a browser and go to `http://<your-vm-public-ip>/bootcamp/` to see the web page.
+   - Open a browser and go to \`http://<your-vm-public-ip>/bootcamp/\` to see the web page.
 
 ---
 
@@ -243,23 +233,23 @@ CLI Demos Recorded
 
 ### Installation Steps:
 1. **Install Docker**:
-   ```bash
+   \`\`\`bash
    sudo apt update
    sudo apt install docker.io
    sudo systemctl enable --now docker
-   ```
+   \`\`\`
 2. **Verify Docker Installation**:
-   ```bash
+   \`\`\`bash
    docker --version
-   ```
+   \`\`\`
 3. **Pull the Python Docker Image**:
-   ```bash
+   \`\`\`bash
    sudo docker pull python
-   ```
+   \`\`\`
 4. **Run Python in Docker Container**:
-   ```bash
+   \`\`\`bash
    sudo docker run python python -c "print('Hello, World!')"
-   ```
+   \`\`\`
 
 ---
 
@@ -270,23 +260,23 @@ CLI Demos Recorded
 
 ### Installation Steps:
 1. **Install Asciinema**:
-   ```bash
+   \`\`\`bash
    sudo apt install asciinema
-   ```
+   \`\`\`
 2. **Record the Web Server Setup**:
-   ```bash
+   \`\`\`bash
    asciinema rec webserver.cast
-   ```
-   - Perform the setup and press `Ctrl+D` to stop recording.
+   \`\`\`
+   - Perform the setup and press \`Ctrl+D\` to stop recording.
 3. **Record the Docker Demo**:
-   ```bash
+   \`\`\`bash
    asciinema rec docker.cast
-   ```
-   - Run the Docker commands and press `Ctrl+D` to stop recording.
+   \`\`\`
+   - Run the Docker commands and press \`Ctrl+D\` to stop recording.
 4. **Upload the Recordings**:
    - After finishing, follow the on-screen URL or run:
-     ```bash
+     \`\`\`bash
      asciinema upload webserver.cast
      asciinema upload docker.cast
-     ```
-
+     \`\`\`
+"""

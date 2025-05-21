@@ -1,6 +1,0 @@
-error: file not found
-warn: disk space running low
-info: system update completed
-warn: network latency detected
-error: unable to connect to database
-system status: all systems operational

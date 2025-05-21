@@ -1,8 +1,0 @@
-processors:
-  - type: 'abstraction_level_4.processors.counter.LineCounter'
-    options: {}
-  - type: 'abstraction_level_4.processors.fan_in.join_two_lines'
-    options: {}
-  - type: 'abstraction_level_4.processors.fan_out.split_lines'
-    options:
-      delimiter: " "

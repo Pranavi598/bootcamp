@@ -1,4 +1,0 @@
-### abstraction-level_8/requirements.txt
-
-fastapi
-uvicorn

@@ -1,3 +1,0 @@
-Log start
-Log entry 1 - Processed
-Log entry 2 - Processed

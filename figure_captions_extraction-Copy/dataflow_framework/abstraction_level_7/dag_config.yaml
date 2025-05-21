@@ -1,5 +1,0 @@
-start: [tagger]
-tagger: [counter, error_prone]
-counter: [end]
-error_prone: [end]
-end: []

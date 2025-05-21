@@ -135,6 +135,9 @@ sudo docker run python python -c "print('Hello, World!')"
 ### What We’ve Done:
 - Created a GitHub repository named \`bootcamp\` containing all the necessary files for the bootcamp tasks.
 
+
+- Created a GitHub repository named `bootcamp` containing all the necessary files for the bootcamp tasks.
+
 ### Installation Steps:
 1. **Create a GitHub Account** (if you don’t have one already): [GitHub Sign Up](https://github.com/)
 2. **Create a Repository**:
@@ -198,7 +201,7 @@ sudo docker run python python -c "print('Hello, World!')"
 
 ---
 
-## ✅ Web Server Running
+## ✅ Web Server 
 
 ### What We’ve Done:
 - Started a basic Python HTTP server to serve the \`index.html\` file on the Azure VM.
@@ -279,4 +282,3 @@ sudo docker run python python -c "print('Hello, World!')"
      asciinema upload webserver.cast
      asciinema upload docker.cast
      \`\`\`
-"""

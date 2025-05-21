@@ -1,4 +1,4 @@
-readme_md = """
+
 # Bootcamp Setup — DAY 0
 
 This project serves as the initial setup verification for the bootcamp. It demonstrates:

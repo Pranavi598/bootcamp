@@ -134,7 +134,7 @@ CLI Demos Recorded
 
 ## ✅ GitHub Repo Setup
 
-### What We’ve Done:
+
 - Created a GitHub repository named `bootcamp` containing all the necessary files for the bootcamp tasks.
 
 ### Installation Steps:

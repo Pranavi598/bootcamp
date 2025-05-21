@@ -1,114 +1,263 @@
-# 📚 Figure Captions Extraction
+# 🧬 Figure Captions Extraction System 
 
-This project is a Django-based web application that extracts figure captions and related metadata (such as title, abstract, entities) from scientific articles using **PMC** and **PubTator** APIs. The system is being developed as part of a bootcamp with a focus on production-readiness, modular architecture, and real-time monitoring.
+## Overview
+
+The **Figure Captions Extraction System** is a Django-based web application designed to extract figure captions and related metadata from scientific articles using PMC (PubMed Central) or PMID (PubMed Identifier) identifiers. The system offers both a user-friendly web dashboard and a RESTful API, facilitating data retrieval in JSON and CSV formats. It integrates with PubTator for biomedical entity recognition and provides comprehensive logging for monitoring and debugging.
 
 ---
 
-## 🔧 Project Structure (So Far)
+## Table of Contents
+
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Web Dashboard](#web-dashboard)
+  - [API Usage](#api-usage)
+- [Modules Description](#modules-description)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
+
+---
+
+## Features
+
+- **Web Dashboard**: Interactive interface to submit PMC/PMID identifiers and view extracted data.
+- **REST API**: Programmatic access to extraction functionalities.
+- **Data Formats**: Supports JSON and CSV outputs.
+- **Entity Extraction**: Integrates with PubTator for biomedical entity recognition.
+- **Logging**: Comprehensive logging for monitoring and debugging.
+- **Docker Support**: Containerized deployment using Docker and Docker Compose.
+
+---
+
+## Project Structure
 
 ```
 figure_captions_extraction/
-│
-├── mysite/
-│   ├── api/                  # Django API views for frontend/backend integration
-│   ├── ingestion/           # Scripts for pulling figure and metadata from PMC & PubTator
-│   ├── management/
-│   │   └── commands/
-│   │       └── ingest.py     # Custom Django management command to ingest data
-│   ├── templates/            # HTML templates for frontend
-│    
-│   ├── models.py             # Django models for storing extracted data
-│   ├── tasks.py              # Background processing and helper functions
-│   └── ...
-│
-├── Dockerfile                # Dockerfile for running Django app
-├── docker-compose.yml        # Docker Compose for managing services
-├── requirements.txt          # Python dependencies
-└── README.md                 # You are here
+├── .venv/                   # Virtual environment
+├── myenv/                   # Alternative virtual environment
+├── mysite/                  # Django project directory
+│   ├── admin_screenshots/   # Screenshots for documentation
+│   ├── extractor/           # Core application
+│   │   ├── api/             # API views and URLs
+│   │   ├── ingestion/       # Data ingestion modules
+│   │   ├── management/      # Custom management commands
+│   │   ├── migrations/      # Database migrations
+│   │   ├── templates/       # HTML templates
+│   │   ├── logs/            # Log files
+│   │   ├── admin.py         # Admin configurations
+│   │   ├── api.py           # API logic
+│   │   ├── db_storage.py    # Database storage utilities
+│   │   ├── models.py        # Database models
+│   │   ├── pmc_fetcher.py   # PMC data fetching logic
+│   │   ├── pubtator.py      # PubTator integration
+│   │   ├── test.py          # Test scripts
+│   │   ├── tests.py         # Unit tests
+│   │   ├── urls.py          # URL configurations
+│   │   └── views_dashboard.py # Dashboard views
+│   ├── mysite/              # Django settings and WSGI/ASGI
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── db.sqlite3           # SQLite database
+│   ├── extractor_figure.csv # Sample CSV output
+│   ├── extractor_paper.csv  # Sample CSV output
+│   ├── manage.py            # Django management script
+├── .env                     # Environment variables
+├── .env.bak                 # Backup of environment variables
+├── .gitignore               # Git ignore file
+├── docker-compose.yml       # Docker Compose configuration
+├── Dockerfile               # Dockerfile for containerization
+├── documentation.md         # Detailed documentation
+├── h.txt                    # Miscellaneous notes
+├── requirements.txt         # Python dependencies
+└── tests_ids.txt            # Test PMC/PMID IDs
 ```
 
 ---
 
-## ✅ Features Implemented
+## Installation
 
-- [x] Django project setup and modular app (`extractor`)
-- [x] Integrated PMC & PubTator APIs
-- [x] Custom ingestion command: `python manage.py ingest "<PMC_ID>"`
-- [x] Data stored in Django models: articles, figures, captions, and entity mentions
-- [x] Basic frontend using templates to display extracted metadata
-- [x] Dockerfile for containerizing the Django app
-- [x] `docker-compose.yml` setup (pending Docker daemon setup)
-- [x] Running and testing inside WSL (Ubuntu 22.04)
-- [x] FastAPI considered for future monitoring layer (in progress)
+### Prerequisites
+
+- Python 3.8+
+- pip
+- Virtual environment tool (`venv` or `virtualenv`)
+- Docker and Docker Compose (optional, for containerized deployment)
+
+### Steps
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/yourusername/figure_captions_extraction.git
+   cd figure_captions_extraction
+   ```
+
+2. **Create and Activate Virtual Environment**
+
+   ```bash
+   python3 -m venv myenv
+   source myenv/bin/activate
+   ```
+
+3. **Install Dependencies**
+
+   ```bash
+   pip install --upgrade pip
+   pip install -r requirements.txt
+   ```
+
+4. **Apply Migrations**
+
+   ```bash
+   python manage.py migrate
+   ```
+
+5. **Run the Development Server**
+
+   ```bash
+   python manage.py runserver
+   ```
+
+6. **Access the Application**
+
+   - Web Dashboard: `http://127.0.0.1:8000/dashboard/`
+   - API Endpoint: `http://127.0.0.1:8000/api/extract/`
 
 ---
 
-## 🐳 Docker Setup 
+## Usage
 
-### Requirements
-- Docker Desktop running on Windows
-- WSL integration enabled (`Ubuntu-22.04`)
-- Docker daemon must be active before running these commands
+### Web Dashboard
 
-### Steps to Build and Run :
+Accessible at `http://127.0.0.1:8000/dashboard/`, the dashboard allows users to:
+
+- Submit PMC or PMID identifiers.
+- View extracted figure captions and metadata.
+- Download results in JSON or CSV formats.
+
+### API Usage
+
+#### Endpoint
+
+`POST /api/extract/`
+
+#### Request Body
+
+```json
+{
+  "ids": ["PMC1234567", "PMID7654321"],
+  "format": "json"
+}
+```
+
+- `ids`: List of PMC or PMID identifiers.
+- `format`: Desired output format (`json` or `csv`).
+
+#### Response
+
+- **JSON Format**
+
+  ```json
+  {
+    "results": [
+      {
+        "id": "PMC1234567",
+        "title": "Sample Title",
+        "abstract": "Sample Abstract",
+        "figures": [
+          {
+            "caption": "Figure 1 caption.",
+            "entities": ["Entity1", "Entity2"]
+          }
+        ]
+      }
+    ]
+  }
+  ```
+
+- **CSV Format**
+
+  Returns a CSV file with columns: `ID`, `Title`, `Abstract`, `Figure Caption`, `Entities`.
+
+---
+
+## Modules Description
+
+- **`pmc_fetcher.py`**: Fetches and parses XML data from PMC.
+- **`pubtator.py`**: Integrates with PubTator for entity extraction.
+- **`views_dashboard.py`**: Handles dashboard views and submissions.
+- **`api/views.py`**: Manages API endpoints and responses.
+- **`ingestion/`**: Contains modules for data ingestion and processing.
+- **`db_storage.py`**: Utilities for database interactions.
+- **`models.py`**: Defines database models.
+- **`admin.py`**: Configures Django admin interface.
+
+---
+
+## Testing
+
+To run tests:
 
 ```bash
-# Build the containers
-docker-compose build
-
-# Run the containers
-docker-compose up
+python manage.py test
 ```
+
+Ensure that the `tests_ids.txt` file contains valid PMC/PMID identifiers for testing purposes.
 
 ---
 
-## 🧪 Local Development (WSL / Virtualenv)
+## Deployment
 
-You can also run the project manually without Docker:
+### Environment Variables
 
-```bash
-# Activate virtual environment
-source myenv/bin/activate
+Create a `.env` file in the root directory with the following variables:
 
-# Navigate to the Django project
-cd mysite
-
-# Run migrations
-python manage.py migrate
-
-# Run the ingestion command (example PMC ID)
-python manage.py ingest PMC1234567
-
-# Start development server
-python manage.py runserver
+```env
+DEBUG=True
+SECRET_KEY=your_secret_key
+ALLOWED_HOSTS=127.0.0.1,localhost
 ```
+
+### Docker Setup (Optional)
+
+To run the application using Docker:
+
+1. **Build the Docker Image**
+
+   ```bash
+   docker build -t figure_captions_extraction .
+   ```
+
+2. **Run the Docker Container**
+
+   ```bash
+   docker-compose up
+   ```
 
 ---
 
-## 🔍 Example Output (From Ingestion)
+## Contributing
 
-After running:
+Contributions are welcome! Please follow these steps:
 
-```bash
-python manage.py ingest PMC1234567
-```
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit them: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Submit a pull request.
 
-The system:
-- Fetches metadata (title, abstract, figure captions)
-- Parses PubTator annotations (gene, disease, chemical entities)
-- Stores everything in the database
-- Renders on a simple HTML page (WIP)
+
 
 ---
 
-## 🛠️ Features
+## Acknowledgements
 
-- [ ] Add real-time monitoring using FastAPI
-- [ ] Expose ingestion progress via API
-- [ ] Add logging and error handling
-- [ ] Add tests and CI pipeline
-- [ ] Polish Docker Compose setup after fixing Docker daemon issues
-
-
-
-
+- [Django](https://www.djangoproject.com/)
+- [PubTator](https://www.ncbi.nlm.nih.gov/research/pubtator/)

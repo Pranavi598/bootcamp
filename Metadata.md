@@ -176,9 +176,3 @@ This document outlines the **Metadata Schema Design** for storing detailed and e
 - All timestamps follow **ISO 8601** format in **UTC**.
 - The `format_specific_metadata` field is a flexible container for domain-specific extractions.
 
-
-## 🧪 Sample Use Cases
-
-- Indexing metadata for large genomics datasets.
-- Extracting quick previews for structured/unstructured files.
-- Verifying file integrity using checksums.

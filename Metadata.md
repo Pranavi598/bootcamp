@@ -169,18 +169,6 @@ This document outlines the **Metadata Schema Design** for storing detailed and e
 
 ---
 
-## ⚙️ Processing Information
-
-```json
-"processing_info": {
-  "extracted_by_tool_version": "v1.2.0",
-  "extraction_timestamp_utc": "2024-06-05T11:45:00Z",
-  "extraction_duration_ms": 1500,
-  "error_messages": []
-}
-```
-
----
 
 ## 💡 Notes
 

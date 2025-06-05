@@ -188,14 +188,6 @@ This document outlines the **Metadata Schema Design** for storing detailed and e
 - All timestamps follow **ISO 8601** format in **UTC**.
 - The `format_specific_metadata` field is a flexible container for domain-specific extractions.
 
----
-
-## 📦 Versioning
-
-- **Schema Version**: `1.0`
-- Backward-compatible updates should increment minor version; breaking changes increment major version.
-
----
 
 ## 🧪 Sample Use Cases
 

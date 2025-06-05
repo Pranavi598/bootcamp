@@ -38,3 +38,25 @@ sudo findcontent /opt/my_app/data/ chromosome gene protein
 ```
 
 ---
+### 🤖 With LLM
+
+Search files using intelligent context-aware processing (backed by LLM logic).
+
+To search for specific keywords in a particular directory:
+
+```bash
+search_files /home/myuser/documents "report" "sales" "quarterly"
+```
+
+This internally calls your backend Python script which executes the `findcontent` logic.
+
+To search for a single keyword in a log directory:
+
+```bash
+search_files /var/log "error"
+```
+
+To search the entire server (requires sudo and will be slow):
+
+```bash
+sudo search_files / "configuration" "database"

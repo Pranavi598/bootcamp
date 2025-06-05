@@ -60,3 +60,5 @@ To search the entire server (requires sudo and will be slow):
 
 ```bash
 sudo search_files / "configuration" "database"
+meta-indexer upload file.txt --tags "category=genomics" "owner=john.doe" "confidence=0.92"
+```
